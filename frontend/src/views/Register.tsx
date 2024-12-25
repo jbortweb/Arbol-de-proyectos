@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import ErrorMessage from '../components/ErrorMessage'
 import { RegisterForm } from '../types'
-import axios, { isAxiosError } from 'axios'
+import { isAxiosError } from 'axios'
 import { toast } from 'sonner'
+import api from '../config/axios'
 
 export default function Register() {
   const initialValues: RegisterForm = {
@@ -23,11 +24,9 @@ export default function Register() {
 
   const password = watch('password')
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL
-
   const handleRegister = async (formData: RegisterForm) => {
     try {
-      const { data } = await axios.post(`${backendUrl}/auth/register`, formData)
+      const { data } = await api.post(`/auth/register`, formData)
       toast.success(data)
       reset()
     } catch (error) {
