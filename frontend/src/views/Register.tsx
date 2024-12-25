@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import ErrorMessage from '../components/ErrorMessage'
 import { RegisterForm } from '../types'
 import axios, { isAxiosError } from 'axios'
+import { toast } from 'sonner'
 
 export default function Register() {
   const initialValues: RegisterForm = {
@@ -27,11 +28,11 @@ export default function Register() {
   const handleRegister = async (formData: RegisterForm) => {
     try {
       const { data } = await axios.post(`${backendUrl}/auth/register`, formData)
-      console.log(data)
+      toast.success(data)
       reset()
     } catch (error) {
       if (isAxiosError(error) && error.response) {
-        console.log(error.response.data.error)
+        toast.error(error.response.data.error)
       }
     }
   }
