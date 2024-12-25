@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import slug from 'slug'
 import User from '../models/User'
 import { checkPassword, hashPassword } from '../utils/auth'
+import { generateJWT } from '../utils/jwt'
 
 export const createAccount = async (req: Request, res: Response) => {
   const { email, password } = req.body
@@ -32,18 +33,19 @@ export const createAccount = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body
 
-  const userExists = await User.findOne({ email })
-  if (!userExists) {
+  const user = await User.findOne({ email })
+  if (!user) {
     const error = new Error('El usuario no existe')
     res.status(404).json({ error: error.message })
     return
   }
-  const isPasswordCorrect = await checkPassword(password, userExists.password)
+  const isPasswordCorrect = await checkPassword(password, user.password)
 
   if (!isPasswordCorrect) {
     const error = new Error('La contraseña es incorrecta')
     res.status(404).json({ error: error.message })
     return
   }
-  res.send('Autenticado')
+  const token = generateJWT({ id: user._id })
+  res.send(token)
 }
