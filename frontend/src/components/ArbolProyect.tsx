@@ -8,8 +8,6 @@ type ArbolProyectProps = {
 }
 
 export default function ArbolProyect({ data }: ArbolProyectProps) {
-  console.log(data)
-
   return (
     <>
       <header className="bg-slate-800 py-5">
