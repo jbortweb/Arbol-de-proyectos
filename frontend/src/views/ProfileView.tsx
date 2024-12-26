@@ -9,7 +9,7 @@ export default function ProfileView() {
         <input
           type="text"
           className="border-none bg-slate-100 rounded-lg p-2"
-          placeholder="hNombre de Usuario"
+          placeholder="Nombre de Usuario"
         />
       </div>
 
