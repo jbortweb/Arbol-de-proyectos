@@ -3,6 +3,7 @@ import ErrorMessage from '../components/ErrorMessage'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ProfileForm, User } from '../types'
 import { updateProfile } from '../api/ArbolAPI'
+import { toast } from 'sonner'
 
 export default function ProfileView() {
   const queryClient = useQueryClient()
@@ -21,11 +22,12 @@ export default function ProfileView() {
 
   const updateProfileMutation = useMutation({
     mutationFn: updateProfile,
-    onError: () => {
-      console.log('Hubo un error')
+    onError: (error) => {
+      toast.error(error.message)
     },
-    onSuccess: () => {
-      console.log('Perfil actualizado')
+    onSuccess: (data) => {
+      toast.success(data)
+      queryClient.invalidateQueries({ queryKey: ['user'] })
     },
   })
 
